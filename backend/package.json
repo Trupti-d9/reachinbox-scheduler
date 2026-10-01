@@ -1,0 +1,53 @@
+{
+  "name": "reachinbox-scheduler-backend",
+  "version": "1.0.0",
+  "description": "Email scheduler API + BullMQ worker",
+  "scripts": {
+    "dev": "concurrently -n api,worker -c blue,magenta \"npm:dev:api\" \"npm:dev:worker\"",
+    "dev:api": "tsx watch src/server.ts",
+    "dev:worker": "tsx watch src/worker.ts",
+    "build": "tsc && cp -r src/db/migrations dist/db/",
+    "start": "node dist/server.js",
+    "start:worker": "node dist/worker.js",
+    "migrate": "tsx src/db/migrate.ts",
+    "typecheck": "tsc --noEmit",
+    "load-test": "tsx scripts/load-test.ts",
+    "smtp:local": "tsx scripts/local-smtp.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bull-board/api": "^9.10.2",
+    "@bull-board/express": "^9.10.2",
+    "@elastic/elasticsearch": "^8.19.2",
+    "bullmq": "^5.81.5",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.5",
+    "express": "^4.22.3",
+    "google-auth-library": "^11.1.0",
+    "helmet": "^8.3.0",
+    "ioredis": "^5.11.1",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.12.1",
+    "nodemailer": "^10.0.13",
+    "pg": "^8.23.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.25",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^26.6.3",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.23.1",
+    "@types/smtp-server": "^3.5.13",
+    "concurrently": "^10.0.5",
+    "smtp-server": "^3.19.16",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}

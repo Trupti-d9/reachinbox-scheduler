@@ -1,0 +1,296 @@
+{
+  "info": {
+    "name": "ReachInbox Scheduler",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Log in once in the browser (Google) and copy the ri_session cookie into {{token}}, or use Dev login locally (ALLOW_DEV_LOGIN=true)."
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Dev login (local only)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/dev-login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "dev-login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"you@example.com\",\n  \"name\": \"You\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Me",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Schedule campaign",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "{{$guid}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/campaigns",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "campaigns"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"subject\": \"Quick question\",\n  \"body\": \"Hi there,\\nAre you the right person for outbound?\",\n  \"leads\": [\n    \"asha@acme.io\",\n    \"ravi@acme.io\",\n    \"meena@startup.in\"\n  ],\n  \"startAt\": \"2030-01-01T09:00:00.000Z\",\n  \"delayMs\": 2000,\n  \"hourlyLimit\": 50\n}"
+        }
+      }
+    },
+    {
+      "name": "Schedule single email",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/emails",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "emails"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"to\": \"asha@acme.io\",\n  \"subject\": \"Hello\",\n  \"body\": \"Hi Asha\",\n  \"scheduledAt\": \"2030-01-01T09:00:00.000Z\"\n}"
+        }
+      }
+    },
+    {
+      "name": "List scheduled",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/emails?type=scheduled&page=1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "emails"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "scheduled"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "List sent",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/emails?type=sent&page=1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "emails"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "sent"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Stats",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/emails/stats",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "emails",
+            "stats"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Search",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/emails/search?q=acme",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "emails",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "acme"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Senders",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/senders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "senders"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Slack status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/slack/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "slack",
+            "status"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Slack test message",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/slack/test",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "slack",
+            "test"
+          ]
+        }
+      }
+    }
+  ]
+}
